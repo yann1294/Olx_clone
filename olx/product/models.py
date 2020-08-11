@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 # Create your models here.
@@ -21,6 +22,13 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=5)
     created = models.DateTimeField(default=timezone.now)
 
+    slug = models.SlugField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.name:
+            self.slug = slugify(self.name)
+        super(Product, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -35,6 +43,7 @@ class ProductImages(models.Model):
     class Meta:
         verbose_name = 'Product Image'
         verbose_name_plural = 'Product Images'
+
 
 class Category(models.Model):
     ## for product category

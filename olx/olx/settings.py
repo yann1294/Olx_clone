@@ -66,7 +66,7 @@ TEMPLATES = [
         },
     },
 ]
-LOGIN_REDIRECT_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
 WSGI_APPLICATION = 'olx.wsgi.application'
 
 # Database

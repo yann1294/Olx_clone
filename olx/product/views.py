@@ -3,6 +3,7 @@ from .models import Product, ProductImages, Category
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
@@ -15,7 +16,7 @@ def productlist(request, category_slug=None):
     categoryList = Category.objects.annotate(total_products=Count('product'))
 
     if category_slug:
-        category = Category.objects.get(slug=category_slug)
+        category = get_object_or_404(Category, slug=category_slug)
         productlist = productlist.filter(category=category)
 
     search_query = request.GET.get('q')
@@ -41,7 +42,7 @@ def productlist(request, category_slug=None):
 
 def productdetail(request, product_slug):
     print(product_slug)
-    productdetail = Product.objects.get(slug=product_slug)
+    productdetail = get_object_or_404(Product, slug=product_slug)
     productimages = ProductImages.objects.filter(product=productdetail)
     template = 'Product/product_detail.html'
     context = {'product_detail': productdetail, 'product_images': productimages}
